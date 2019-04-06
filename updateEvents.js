@@ -2,7 +2,7 @@ const { exec } = require('child_process')
 const fs = require('fs')
 const path = require('path')
 
-exec('aws logs describe-log-groups --region eu-west-1', (err, stdout, stderr) => {
+exec('aws logs describe-log-groups --region eu-west-1', { env: process.env }, (err, stdout, stderr) => {
   if (err) return console.error(err)
 
   const resultJSON = JSON.parse(stdout)
