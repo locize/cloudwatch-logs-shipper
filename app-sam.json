@@ -1,0 +1,65 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Transform": "AWS::Serverless-2016-10-31",
+  "Parameters": {
+    "Token": {
+      "Type": "String"
+    },
+    "Host": {
+      "Type": "String",
+      "Default": "listener.logz.io"
+    },
+    "Compress": {
+      "Type": "String",
+      "Default": "false"
+    },
+    "ExportName": {
+      "Type": "String",
+      "Default": "Function::CloudWatch-Logs-Shipper::Arn"
+    }
+  },
+  "Resources": {
+    "CloudWatchFunction": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "AWS::StackName"
+        },
+        "Runtime": "nodejs8.10",
+        "Handler": "lambda.handler",
+        "Timeout": 60,
+        "MemorySize": 192,
+        "CodeUri": "build",
+        "Environment": {
+          "Variables": {
+            "TOKEN": {
+              "Fn::Sub": "${Token}"
+            },
+            "HOST": {
+              "Fn::Sub": "${Host}"
+            },
+            "COMPRESS": {
+              "Fn::Sub": "${Compress}"
+            }
+          }
+        },
+        "Events": {}
+      }
+    }
+  },
+  "Outputs": {
+    "FunctionArn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "CloudWatchFunction",
+          "Arn"
+        ]
+      },
+      "Export": {
+        "Name": {
+          "Fn::Sub": "${ExportName}"
+        }
+      }
+    }
+  }
+}
