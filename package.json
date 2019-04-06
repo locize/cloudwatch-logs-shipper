@@ -7,7 +7,7 @@
     "lint": "eslint .",
     "updateEvents": "node updateEvents.js",
     "build": "npm run lint && rm -rf build && packageName=$(npm pack) && tar -xvzf $packageName && mv package build && rm $packageName && cd build && npm i --production && rm -f package-lock.json && cd ..",
-    "cf_package": "npm run updateEvents && npm run build && aws cloudformation package --template-file app-sam.json --s3-bucket $S3_BUCKET --output-template-file app-output_sam.yaml",
+    "cf_package": "npm run updateEvents && npm run build && aws cloudformation package --template-file app-sam-with-events.json --s3-bucket $S3_BUCKET --output-template-file app-output_sam.yaml",
     "cf_deploy": "aws cloudformation deploy --template-file app-output_sam.yaml --stack-name $npm_package_name --region eu-west-1 --capabilities CAPABILITY_IAM --parameter-override Token=1234 Compress=true",
     "deploy": "npm run cf_package && npm run cf_deploy",
     "test": "npm run lint && mocha --colors --reporter spec --recursive test"

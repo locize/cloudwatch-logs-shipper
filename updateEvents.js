@@ -20,7 +20,7 @@ exec('aws logs describe-log-groups --region eu-west-1', { env: process.env }, (e
     return prev
   }, {})
 
-  fs.writeFile(path.join(__dirname, 'app-sam.json'), JSON.stringify(appSam, null, 2), (err) => {
+  fs.writeFile(path.join(__dirname, 'app-sam-with-events.json'), JSON.stringify(appSam, null, 2), (err) => {
     if (err) console.error(err)
   })
 })

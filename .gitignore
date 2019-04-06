@@ -6,3 +6,4 @@ app-output_sam.yaml
 app-output_sam.json
 build
 deploy.sh
+app-sam-with-events.json
