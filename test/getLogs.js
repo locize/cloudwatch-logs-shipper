@@ -5,7 +5,7 @@ describe('getLogs', () => {
   const testEvent = {
     messageType: 'DATA_MESSAGE',
     owner: '000000000000',
-    logGroup: 'test-log-group',
+    logGroup: '/aws/lambda/test-log-group',
     logStream: 'test-log-stream',
     subscriptionFilters: [ 'test-filter' ],
     logEvents: [
@@ -23,8 +23,12 @@ describe('getLogs', () => {
     should(logs).length(2)
     should(logs[0]).have.property('@timestamp')
     should(logs[0]).have.property('real_ip', '8.8.8.8')
+    should(logs[0]).have.property('logGroup', '/aws/lambda/test-log-group')
+    should(logs[0]).have.property('functionName', 'test-log-group')
     should(logs[1]).have.property('@timestamp')
     should(logs[1]).have.property('message', testEvent.logEvents[1].message)
+    should(logs[1]).have.property('logGroup', '/aws/lambda/test-log-group')
+    should(logs[1]).have.property('functionName', 'test-log-group')
   })
 
   describe('of node.js json output', () => {
