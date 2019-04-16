@@ -10,6 +10,7 @@ app-output_sam.json
 .gitignore
 .npmignore
 .editorconfig
+.vscode
 README.md
 buildspec.yml
 .eslintignore
