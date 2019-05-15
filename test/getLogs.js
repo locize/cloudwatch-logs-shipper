@@ -96,15 +96,34 @@ describe('getLogs', () => {
           timestamp: 1484275477103,
           // eslint-disable-next-line no-tabs
           message: '2019-04-05T12:55:41.511Z	187d6e46-a992-442f-865a-2cd194c7297e	calling action incrementModifications...'
-        } ]
+        },
+        { id: '01234567890123456789012345678901234567890123456789012346',
+          timestamp: 1484275477104,
+          // eslint-disable-next-line no-tabs
+          message: '2019-04-05T12:55:41.512Z	187d6e46-a992-442f-865a-2cd194c7297f	INFO	this is from node 10 runtime...'
+        },
+        { id: '01234567890123456789012345678901234567890123456789012347',
+          timestamp: 1484275477105,
+          // eslint-disable-next-line no-tabs
+          message: '2019-04-05T12:55:41.513Z	187d6e46-a992-442f-865a-2cd194c7297d	ERROR	this is from node 10 runtime too...'
+        }
+      ]
     }
 
     it('should work as expected', () => {
       const logs = getLogs(testEvent)
-      should(logs).length(1)
+      should(logs).length(3)
       should(logs[0]).have.property('@timestamp')
       should(logs[0]).have.property('requestId', '187d6e46-a992-442f-865a-2cd194c7297e')
       should(logs[0]).have.property('message', 'calling action incrementModifications...')
+      should(logs[1]).have.property('@timestamp')
+      should(logs[1]).have.property('requestId', '187d6e46-a992-442f-865a-2cd194c7297f')
+      should(logs[1]).have.property('message', 'this is from node 10 runtime...')
+      should(logs[1]).have.property('level', 'INFO')
+      should(logs[2]).have.property('@timestamp')
+      should(logs[2]).have.property('requestId', '187d6e46-a992-442f-865a-2cd194c7297d')
+      should(logs[2]).have.property('message', 'this is from node 10 runtime too...')
+      should(logs[2]).have.property('level', 'ERROR')
     })
   })
 
