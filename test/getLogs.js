@@ -43,7 +43,37 @@ describe('getLogs', () => {
           timestamp: 1484275477103,
           message:
             // eslint-disable-next-line no-tabs
-            `2019-04-05T13:30:48.634Z	00dc790e-2a09-4d3d-97f9-8d7d81dd231f
+            `2019-04-05T13:30:48.634Z	00dc790e-2a09-4d3d-97f9-8d7d81dd231f	ERROR	Unhandled Promise Rejection
+{
+    "errorType": "Runtime.UnhandledPromiseRejection",
+    "errorMessage": "TypeError: Cannot read property 'claims' of undefined",
+    "stack": [
+        "Runtime.UnhandledPromiseRejection: TypeError: Cannot read property 'claims' of undefined",
+        "    at process.on (/var/runtime/index.js:29:13)",
+        "    at process.emit (events.js:198:13)",
+        "    at process.EventEmitter.emit (domain.js:448:20)",
+        "    at emitPromiseRejectionWarnings (internal/process/promises.js:119:20)",
+        "    at process._tickCallback (internal/process/next_tick.js:69:34)"
+    ],
+    "reason": {
+        "errorType": "TypeError",
+        "errorMessage": "Cannot read property 'claims' of undefined",
+        "stack": [
+            "TypeError: Cannot read property 'claims' of undefined",
+            "    at Object.<anonymous> (/var/task/lib/enhanceResponse.js:113:52)",
+            "    at hookIterator (/var/task/node_modules/fastify/lib/hooks.js:124:10)",
+            "    at next (/var/task/node_modules/fastify/lib/hooks.js:70:20)",
+            "    at handleResolve (/var/task/node_modules/fastify/lib/hooks.js:77:5)",
+            "    at process._tickCallback (internal/process/next_tick.js:68:7)"
+        ]
+    },
+    "promise": {}
+}` },
+        { id: '01234567890123456789012345678901234567890123456789012345',
+          timestamp: 1484275477103,
+          message:
+            // eslint-disable-next-line no-tabs
+            `2019-04-05T13:30:48.634Z	00dc790e-2a09-4d3d-97f9-8d7d81dd231e
 {
     "message": "dev | user 3a511eb7-8927-4941-abe8-fa09d0036db7 called GET /api/echo",
     "environment": "dev",
@@ -55,11 +85,12 @@ describe('getLogs', () => {
     "country": "CH",
     "x-amzn-trace-id": "Root=1-5ca75888-20aa791a9984ce2670ad9bc6"
 }` },
-        { id: '01234567890123456789012345678901234567890123456789012345',
-          timestamp: 1484275477103,
+        { id: '01234567890123456789012345678901234567890123456789012346',
+          timestamp: 1484275477104,
           message:
             // eslint-disable-next-line no-tabs
-            `2019-04-05T13:30:48.634Z	00dc790e-2a09-4d3d-97f9-8d7d81dd231f	{
+            `2019-04-05T13:30:48.635Z	00dc790e-2a09-4d3d-97f9-8d7d81dd231e
+{
     "message": "dev | user 3a511eb7-8927-4941-abe8-fa09d0036db7 called GET /api/echo",
     "environment": "dev",
     "userId": "3a511eb7-8927-4941-abe8-fa09d0036db7",
@@ -74,13 +105,17 @@ describe('getLogs', () => {
 
     it('should work as expected', () => {
       const logs = getLogs(testEvent)
-      should(logs).length(2)
+      should(logs).length(3)
       should(logs[0]).have.property('requestId', '00dc790e-2a09-4d3d-97f9-8d7d81dd231f')
-      should(logs[0]).have.property('message', 'dev | user 3a511eb7-8927-4941-abe8-fa09d0036db7 called GET /api/echo')
-      should(logs[0]).have.property('sourceIp', '83.73.226.2')
-      should(logs[1]).have.property('requestId', '00dc790e-2a09-4d3d-97f9-8d7d81dd231f')
+      should(logs[0]).have.property('message', 'Unhandled Promise Rejection')
+      should(logs[0]).have.property('errorMessage', 'TypeError: Cannot read property \'claims\' of undefined')
+      should(logs[0]).have.property('errorType', 'Runtime.UnhandledPromiseRejection')
+      should(logs[1]).have.property('requestId', '00dc790e-2a09-4d3d-97f9-8d7d81dd231e')
       should(logs[1]).have.property('message', 'dev | user 3a511eb7-8927-4941-abe8-fa09d0036db7 called GET /api/echo')
       should(logs[1]).have.property('sourceIp', '83.73.226.2')
+      should(logs[2]).have.property('requestId', '00dc790e-2a09-4d3d-97f9-8d7d81dd231e')
+      should(logs[2]).have.property('message', 'dev | user 3a511eb7-8927-4941-abe8-fa09d0036db7 called GET /api/echo')
+      should(logs[2]).have.property('sourceIp', '83.73.226.2')
     })
   })
 
