@@ -14,13 +14,17 @@ describe('extract', () => {
     logStream: 'test-log-stream',
     subscriptionFilters: [ 'test-filter' ],
     logEvents: [
-      { id: '01234567890123456789012345678901234567890123456789012345',
+      {
+        id: '01234567890123456789012345678901234567890123456789012345',
         timestamp: 1484275477103,
         message:
-          '{"http_user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36","real_ip":"8.8.8.8"}' },
-      { id: '12345678901234567890123456789012345678901234567890123456',
+          '{"http_user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36","real_ip":"8.8.8.8"}'
+      },
+      {
+        id: '12345678901234567890123456789012345678901234567890123456',
         timestamp: 1484275477113,
-        message: '[ERROR] Example error message.' } ]
+        message: '[ERROR] Example error message.'
+      } ]
   }
 
   it('should work as expected', async () => {
