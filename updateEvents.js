@@ -1,6 +1,7 @@
 const { exec } = require('child_process')
 const fs = require('fs')
 const path = require('path')
+const { createHash } = require('crypto')
 
 exec('aws logs describe-log-groups --region eu-west-1', { env: process.env }, (err, stdout, stderr) => {
   if (err) return console.error(err)
@@ -15,8 +16,10 @@ exec('aws logs describe-log-groups --region eu-west-1', { env: process.env }, (e
       LogGroupName: name,
       FilterPattern: ''
     }
-  })).reduce((prev, curr, i) => {
-    prev[i.toString()] = curr
+  })).reduce((prev, curr) => {
+    const hasher = createHash('md5')
+    hasher.update(curr.Properties.LogGroupName)
+    prev[hasher.digest('hex')] = curr
     return prev
   }, {})
 
