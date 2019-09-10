@@ -202,12 +202,17 @@ describe('getLogs', () => {
           id: '01234567890123456789012345678901234567890123456789012345',
           timestamp: 1484275477103,
           message: 'REPORT RequestId: f6a55753-b02b-4b42-bcee-432133f66d26\tDuration: 9.34 ms\tBilled Duration: 100 ms \tMemory Size: 192 MB\tMax Memory Used: 70 MB'
-        } ]
+        },
+        {
+          id: '01234567890123456789012345678901234567890123456789012345',
+          timestamp: 1484275477103,
+          message: 'REPORT RequestId: a1d3049c-3185-4852-8b45-aec8f2d4107d Duration: 2888.47 ms Billed Duration: 2900 ms Memory Size: 192 MB Max Memory Used: 98 MB Init Duration: 474.27 ms\nXRAY TraceId: 1-5d77b095-7b10875864d08196cbad28d6 SegmentId: 3fd69a1119839b2c Sampled: false'
+        }]
     }
 
     it('should work as expected', () => {
       const logs = getLogs(testEvent)
-      should(logs).length(4)
+      should(logs).length(5)
       should(logs[0]).have.property('@timestamp')
       should(logs[0]).have.property('requestId', 'f6a55753-b02b-4b42-bcee-432133f66d26')
       should(logs[0]).have.property('message', 'START RequestId: f6a55753-b02b-4b42-bcee-432133f66d26 Version: blabla')
@@ -227,6 +232,12 @@ describe('getLogs', () => {
       should(logs[3]).have.property('billedDuration', 100)
       should(logs[3]).have.property('memorySize', 192)
       should(logs[3]).have.property('maxMemoryUsed', 70)
+      // eslint-disable-next-line no-tabs
+      should(logs[4]).have.property('message', 'REPORT RequestId: a1d3049c-3185-4852-8b45-aec8f2d4107d Duration: 2888.47 ms Billed Duration: 2900 ms Memory Size: 192 MB Max Memory Used: 98 MB Init Duration: 474.27 ms\nXRAY TraceId: 1-5d77b095-7b10875864d08196cbad28d6 SegmentId: 3fd69a1119839b2c Sampled: false')
+      should(logs[4]).have.property('duration', 2888.47)
+      should(logs[4]).have.property('billedDuration', 2900)
+      should(logs[4]).have.property('memorySize', 192)
+      should(logs[4]).have.property('maxMemoryUsed', 98)
     })
   })
 })
