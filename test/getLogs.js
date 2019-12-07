@@ -110,12 +110,36 @@ describe('getLogs', () => {
     "country": "CH",
     "x-amzn-trace-id": "Root=1-5ca75888-20aa791a9984ce2670ad9bc6"
 }`
-        } ]
+        },
+        {
+          id: '01234567890123456789012345678901234567890123456389012314',
+          timestamp: 1484275497105,
+          // eslint-disable-next-line no-tabs
+          message: `2019-12-07T11:46:57.621Z	e0433a5d-d948-4807-b1a4-2f669167d7e8	ERROR	Invoke Error
+  {
+      "errorType": "Error",
+      "errorMessage": "ENOENT: no such file or directory, open '/var/task/lib/handler/verification.pug'",
+      "code": "ENOENT",
+      "errno": -2,
+      "syscall": "open",
+      "path": "/var/task/lib/handler/verification.pug",
+      "stack": [
+          "Error: ENOENT: no such file or directory, open '/var/task/lib/handler/verification.pug'",
+          "    at Object.openSync (fs.js:440:3)",
+          "    at Object.readFileSync (fs.js:342:35)",
+          "    at handleTemplateCache (/var/task/node_modules/pug/lib/index.js:214:37)",
+          "    at Object.exports.renderFile (/var/task/node_modules/pug/lib/index.js:427:10)",
+          "    at module.exports (/var/task/lib/getHtml.js:5:20)",
+          "    at Runtime.exports.handler (/var/task/lambda.js:22:35)",
+          "    at processTicksAndRejections (internal/process/task_queues.js:93:5)"
+      ]
+  }`
+        }]
     }
 
     it('should work as expected', () => {
       const logs = getLogs(testEvent)
-      should(logs).length(3)
+      should(logs).length(4)
       should(logs[0]).have.property('requestId', '00dc790e-2a09-4d3d-97f9-8d7d81dd231f')
       should(logs[0]).have.property('message', 'Unhandled Promise Rejection')
       should(logs[0]).have.property('errorMessage', 'TypeError: Cannot read property \'claims\' of undefined')
@@ -126,6 +150,10 @@ describe('getLogs', () => {
       should(logs[2]).have.property('requestId', '00dc790e-2a09-4d3d-97f9-8d7d81dd231e')
       should(logs[2]).have.property('message', 'dev | user 3a511eb7-8927-4941-abe8-fa09d0036db7 called GET /api/echo')
       should(logs[2]).have.property('sourceIp', '83.73.226.2')
+      should(logs[3]).have.property('requestId', 'e0433a5d-d948-4807-b1a4-2f669167d7e8')
+      should(logs[3]).have.property('message', 'Invoke Error')
+      should(logs[3]).have.property('errorMessage', 'ENOENT: no such file or directory, open \'/var/task/lib/handler/verification.pug\'')
+      should(logs[3]).have.property('errorType', 'Error')
     })
   })
 
