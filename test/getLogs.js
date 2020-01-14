@@ -240,12 +240,18 @@ describe('getLogs', () => {
           id: '01234567890123456789012345678901234567890123456789012314',
           timestamp: 1484275477105,
           message: 'REPORT RequestId: 931635bd-4d2b-499e-a591-3f55ef31e1e0\tDuration: 57.07 ms\tBilled Duration: 100 ms\tMemory Size: 192 MB\tMax Memory Used: 167 MB'
-        }]
+        },
+        {
+          id: '01234567890123456789012345678901234567890123456789023314',
+          timestamp: 1484275477106,
+          message: '2020-01-14T07:39:49.657Z 63a96020-4e07-4676-81a3-66fd47ed4815 Task timed out after 30.03 seconds'
+        }
+      ]
     }
 
     it('should work as expected', () => {
       const logs = getLogs(testEvent)
-      should(logs).length(6)
+      should(logs).length(7)
       should(logs[0]).have.property('@timestamp')
       should(logs[0]).have.property('requestId', 'f6a55753-b02b-4b42-bcee-432133f66d26')
       should(logs[0]).have.property('message', 'START RequestId: f6a55753-b02b-4b42-bcee-432133f66d26 Version: blabla')
@@ -277,6 +283,8 @@ describe('getLogs', () => {
       should(logs[5]).have.property('billedDuration', 100)
       should(logs[5]).have.property('memorySize', 192)
       should(logs[5]).have.property('maxMemoryUsed', 167)
+      should(logs[6]).have.property('message', '2020-01-14T07:39:49.657Z 63a96020-4e07-4676-81a3-66fd47ed4815 Task timed out after 30.03 seconds')
+      should(logs[6]).have.property('requestId', '63a96020-4e07-4676-81a3-66fd47ed4815')
     })
   })
 })
