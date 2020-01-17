@@ -245,13 +245,18 @@ describe('getLogs', () => {
           id: '01234567890123456789012345678901234567890123456789023314',
           timestamp: 1484275477106,
           message: '2020-01-14T07:39:49.657Z 63a96020-4e07-4676-81a3-66fd47ed4815 Task timed out after 30.03 seconds'
+        },
+        {
+          id: '01234567890123456789012345678901234567892342345678902336',
+          timestamp: 1484275477127,
+          message: 'REPORT RequestId: 2b0cbe4b-1180-489f-949f-2ccd41d97c44\tDuration: 42.35 ms\tBilled Duration: 100 ms\tMemory Size: 768 MB\tMax Memory Used: 98 MB\tXRAY TraceId: 1-5e217425-b2c3bdff0cfb667d712a5880\tSegmentId: 2e3b43185b988b12\tSampled: true\t'
         }
       ]
     }
 
     it('should work as expected', () => {
       const logs = getLogs(testEvent)
-      should(logs).length(7)
+      should(logs).length(8)
       should(logs[0]).have.property('@timestamp')
       should(logs[0]).have.property('requestId', 'f6a55753-b02b-4b42-bcee-432133f66d26')
       should(logs[0]).have.property('message', 'START RequestId: f6a55753-b02b-4b42-bcee-432133f66d26 Version: blabla')
@@ -285,6 +290,15 @@ describe('getLogs', () => {
       should(logs[5]).have.property('maxMemoryUsed', 167)
       should(logs[6]).have.property('message', '2020-01-14T07:39:49.657Z 63a96020-4e07-4676-81a3-66fd47ed4815 Task timed out after 30.03 seconds')
       should(logs[6]).have.property('requestId', '63a96020-4e07-4676-81a3-66fd47ed4815')
+      should(logs[7]).have.property('message', 'REPORT RequestId: 2b0cbe4b-1180-489f-949f-2ccd41d97c44\tDuration: 42.35 ms\tBilled Duration: 100 ms\tMemory Size: 768 MB\tMax Memory Used: 98 MB\tXRAY TraceId: 1-5e217425-b2c3bdff0cfb667d712a5880\tSegmentId: 2e3b43185b988b12\tSampled: true')
+      should(logs[7]).have.property('requestId', '2b0cbe4b-1180-489f-949f-2ccd41d97c44')
+      should(logs[7]).have.property('duration', 42.35)
+      should(logs[7]).have.property('billedDuration', 100)
+      should(logs[7]).have.property('memorySize', 768)
+      should(logs[7]).have.property('maxMemoryUsed', 98)
+      should(logs[7]).have.property('xRayTraceId', '1-5e217425-b2c3bdff0cfb667d712a5880')
+      should(logs[7]).have.property('segmentId', '2e3b43185b988b12')
+      should(logs[7]).have.property('sampled', true)
     })
   })
 })
