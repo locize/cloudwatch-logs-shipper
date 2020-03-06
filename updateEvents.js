@@ -7,7 +7,12 @@ exec('aws logs describe-log-groups --region eu-west-1', { env: process.env }, (e
   if (err) return console.error(err)
 
   const resultJSON = JSON.parse(stdout)
-  const desiredLogGroupNames = resultJSON.logGroups.filter((lg) => lg.logGroupName.indexOf(require('./package.json').name) < 0 && lg.logGroupName.indexOf('cloudwatch-alarm-to-slack') < 0).map((lg) => lg.logGroupName)
+  const desiredLogGroupNames = resultJSON.logGroups.filter((lg) => {
+    return lg.logGroupName.indexOf(require('./package.json').name) < 0 &&
+           lg.logGroupName.indexOf('cloudwatch-alarm-to-slack') < 0 &&
+           lg.logGroupName.indexOf('logz-shipper') < 0
+  }).map((lg) => lg.logGroupName)
+  console.log(resultJSON.logGroups)
 
   const appSam = require('./app-sam.json')
   appSam.Resources.CloudWatchFunction.Properties.Events = desiredLogGroupNames.map((name) => ({
