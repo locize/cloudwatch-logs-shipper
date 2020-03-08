@@ -114,26 +114,8 @@ describe('getLogs', () => {
         {
           id: '01234567890123456789012345678901234567890123456389012314',
           timestamp: 1484275497105,
-          // eslint-disable-next-line no-tabs
-          message: `2019-12-07T11:46:57.621Z	e0433a5d-d948-4807-b1a4-2f669167d7e8	ERROR	Invoke Error
-  {
-      "errorType": "Error",
-      "errorMessage": "ENOENT: no such file or directory, open '/var/task/lib/handler/verification.pug'",
-      "code": "ENOENT",
-      "errno": -2,
-      "syscall": "open",
-      "path": "/var/task/lib/handler/verification.pug",
-      "stack": [
-          "Error: ENOENT: no such file or directory, open '/var/task/lib/handler/verification.pug'",
-          "    at Object.openSync (fs.js:440:3)",
-          "    at Object.readFileSync (fs.js:342:35)",
-          "    at handleTemplateCache (/var/task/node_modules/pug/lib/index.js:214:37)",
-          "    at Object.exports.renderFile (/var/task/node_modules/pug/lib/index.js:427:10)",
-          "    at module.exports (/var/task/lib/getHtml.js:5:20)",
-          "    at Runtime.exports.handler (/var/task/lambda.js:22:35)",
-          "    at processTicksAndRejections (internal/process/task_queues.js:93:5)"
-      ]
-  }`
+          // eslint-disable-next-line no-tabs,quotes,no-useless-escape
+          message: `2019-12-07T11:46:57.621Z	e0433a5d-d948-4807-b1a4-2f669167d7e8	ERROR	Invoke Error \n{\"errorType\":\"Error\",\"errorMessage\":\"Cannot find module '../../asyncHelpers/all'\\nRequire stack:\\n- /var/task/actions/order.js\\n- /var/task/events/orderRequested.js\\n- /var/task/lambda.js\\n- /var/runtime/UserFunction.js\\n- /var/runtime/index.js\",\"code\":\"MODULE_NOT_FOUND\",\"requireStack\":[\"/var/task/actions/order.js\",\"/var/task/events/orderRequested.js\",\"/var/task/lambda.js\",\"/var/runtime/UserFunction.js\",\"/var/runtime/index.js\"],\"stack\":[\"Error: Cannot find module '../../asyncHelpers/all'\",\"Require stack:\",\"- /var/task/actions/order.js\",\"- /var/task/events/orderRequested.js\",\"- /var/task/lambda.js\",\"- /var/runtime/UserFunction.js\",\"- /var/runtime/index.js\",\"    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:793:17)\",\"    at Function.Module._load (internal/modules/cjs/loader.js:686:27)\",\"    at Module.require (internal/modules/cjs/loader.js:848:19)\",\"    at require (internal/modules/cjs/helpers.js:74:18)\",\"    at Object.<anonymous> (/var/task/actions/order.js:8:18)\",\"    at Module._compile (internal/modules/cjs/loader.js:955:30)\",\"    at Object.Module._extensions..js (internal/modules/cjs/loader.js:991:10)\",\"    at Module.load (internal/modules/cjs/loader.js:811:32)\",\"    at Function.Module._load (internal/modules/cjs/loader.js:723:14)\",\"    at Module.require (internal/modules/cjs/loader.js:848:19)\"]}`
         }]
     }
 
@@ -152,8 +134,9 @@ describe('getLogs', () => {
       should(logs[2]).have.property('sourceIp', '83.73.226.2')
       should(logs[3]).have.property('requestId', 'e0433a5d-d948-4807-b1a4-2f669167d7e8')
       should(logs[3]).have.property('message', 'Invoke Error')
-      should(logs[3]).have.property('errorMessage', 'ENOENT: no such file or directory, open \'/var/task/lib/handler/verification.pug\'')
+      should(logs[3]).have.property('errorMessage', 'Cannot find module \'../../asyncHelpers/all\'\nRequire stack:\n- /var/task/actions/order.js\n- /var/task/events/orderRequested.js\n- /var/task/lambda.js\n- /var/runtime/UserFunction.js\n- /var/runtime/index.js')
       should(logs[3]).have.property('errorType', 'Error')
+      should(logs[3]).have.property('stack')
     })
   })
 
