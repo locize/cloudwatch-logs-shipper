@@ -112,12 +112,6 @@ describe('getLogs', () => {
 }`
         },
         {
-          id: '01234567890123456789012345678901234567890123456389012314',
-          timestamp: 1484275497105,
-          // eslint-disable-next-line no-tabs,quotes,no-useless-escape
-          message: `2019-12-07T11:46:57.621Z	e0433a5d-d948-4807-b1a4-2f669167d7e8	ERROR	Invoke Error \n{\"errorType\":\"Error\",\"errorMessage\":\"Cannot find module '../../asyncHelpers/all'\\nRequire stack:\\n- /var/task/actions/order.js\\n- /var/task/events/orderRequested.js\\n- /var/task/lambda.js\\n- /var/runtime/UserFunction.js\\n- /var/runtime/index.js\",\"code\":\"MODULE_NOT_FOUND\",\"requireStack\":[\"/var/task/actions/order.js\",\"/var/task/events/orderRequested.js\",\"/var/task/lambda.js\",\"/var/runtime/UserFunction.js\",\"/var/runtime/index.js\"],\"stack\":[\"Error: Cannot find module '../../asyncHelpers/all'\",\"Require stack:\",\"- /var/task/actions/order.js\",\"- /var/task/events/orderRequested.js\",\"- /var/task/lambda.js\",\"- /var/runtime/UserFunction.js\",\"- /var/runtime/index.js\",\"    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:793:17)\",\"    at Function.Module._load (internal/modules/cjs/loader.js:686:27)\",\"    at Module.require (internal/modules/cjs/loader.js:848:19)\",\"    at require (internal/modules/cjs/helpers.js:74:18)\",\"    at Object.<anonymous> (/var/task/actions/order.js:8:18)\",\"    at Module._compile (internal/modules/cjs/loader.js:955:30)\",\"    at Object.Module._extensions..js (internal/modules/cjs/loader.js:991:10)\",\"    at Module.load (internal/modules/cjs/loader.js:811:32)\",\"    at Function.Module._load (internal/modules/cjs/loader.js:723:14)\",\"    at Module.require (internal/modules/cjs/loader.js:848:19)\"]}`
-        },
-        {
           id: '01234567890123456789012345678901234567890123456389012324',
           timestamp: 1484275497106,
           // eslint-disable-next-line no-tabs,quotes,no-useless-escape
@@ -137,7 +131,7 @@ describe('getLogs', () => {
 
     it('should work as expected', () => {
       const logs = getLogs(testEvent)
-      should(logs).length(5)
+      should(logs).length(4)
       should(logs[0]).have.property('requestId', '00dc790e-2a09-4d3d-97f9-8d7d81dd231f')
       should(logs[0]).have.property('message', 'Unhandled Promise Rejection')
       should(logs[0]).have.property('errorMessage', 'TypeError: Cannot read property \'claims\' of undefined')
@@ -148,16 +142,11 @@ describe('getLogs', () => {
       should(logs[2]).have.property('requestId', '00dc790e-2a09-4d3d-97f9-8d7d81dd231e')
       should(logs[2]).have.property('message', 'dev | user 3a511eb7-8927-4941-abe8-fa09d0036db7 called GET /api/echo')
       should(logs[2]).have.property('sourceIp', '83.73.226.2')
-      should(logs[3]).have.property('requestId', 'e0433a5d-d948-4807-b1a4-2f669167d7e8')
+      should(logs[3]).have.property('requestId', 'bd7403cd-0fb3-4487-883f-5d4e63e7fe5a')
       should(logs[3]).have.property('message', 'Invoke Error')
-      should(logs[3]).have.property('errorMessage', 'Cannot find module \'../../asyncHelpers/all\'\nRequire stack:\n- /var/task/actions/order.js\n- /var/task/events/orderRequested.js\n- /var/task/lambda.js\n- /var/runtime/UserFunction.js\n- /var/runtime/index.js')
+      should(logs[3]).have.property('errorMessage', 'Bad Request')
       should(logs[3]).have.property('errorType', 'Error')
       should(logs[3]).have.property('stack')
-      should(logs[4]).have.property('requestId', 'bd7403cd-0fb3-4487-883f-5d4e63e7fe5a')
-      should(logs[4]).have.property('message', 'Invoke Error')
-      should(logs[4]).have.property('errorMessage', 'Bad Request')
-      should(logs[4]).have.property('errorType', 'Error')
-      should(logs[4]).have.property('stack')
     })
   })
 
