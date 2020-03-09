@@ -115,17 +115,17 @@ describe('getLogs', () => {
           id: '01234567890123456789012345678901234567890123456389012324',
           timestamp: 1484275497106,
           // eslint-disable-next-line no-tabs,quotes,no-useless-escape
-          message: `2020-03-09T09:20:14.709Z	bd7403cd-0fb3-4487-883f-5d4e63e7fe5a	ERROR	Invoke Error
-{
-    "errorType": "Error",
-    "errorMessage": "Bad Request",
-    "stack": [
-        "Error: Bad Request",
-        "    at module.exports (/var/task/actions/notifyProjectApprovedViaCallbackUrl.js:35:22)",
-        "    at processTicksAndRejections (internal/process/task_queues.js:94:5)",
-        "    at async Runtime.exports.handler (/var/task/lambda.js:17:15)"
-    ]
-}`
+          message: `2020-03-09T18:27:45.244Z	eb2685ce-6078-4f95-8180-1601153d2692	ERROR	Invoke Error 	
+          {
+              "errorType": "Error",
+              "errorMessage": "No or wrong argument!",
+              "stack": [
+                  "Error: No or wrong argument!",
+                  "    at module.exports (/var/task/lib/getBearerAuthParam.js:2:48)",
+                  "    at Runtime.exports.handler (/var/task/lambda.js:58:18)",
+                  "    at Runtime.handleOnce (/var/runtime/Runtime.js:66:25)"
+              ]
+          }`
         }]
     }
 
@@ -142,9 +142,9 @@ describe('getLogs', () => {
       should(logs[2]).have.property('requestId', '00dc790e-2a09-4d3d-97f9-8d7d81dd231e')
       should(logs[2]).have.property('message', 'dev | user 3a511eb7-8927-4941-abe8-fa09d0036db7 called GET /api/echo')
       should(logs[2]).have.property('sourceIp', '83.73.226.2')
-      should(logs[3]).have.property('requestId', 'bd7403cd-0fb3-4487-883f-5d4e63e7fe5a')
+      should(logs[3]).have.property('requestId', 'eb2685ce-6078-4f95-8180-1601153d2692')
       should(logs[3]).have.property('message', 'Invoke Error')
-      should(logs[3]).have.property('errorMessage', 'Bad Request')
+      should(logs[3]).have.property('errorMessage', 'No or wrong argument!')
       should(logs[3]).have.property('errorType', 'Error')
       should(logs[3]).have.property('stack')
     })
