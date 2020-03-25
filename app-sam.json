@@ -28,7 +28,7 @@
         "Runtime": "nodejs12.x",
         "Handler": "lambda.handler",
         "Timeout": 60,
-        "MemorySize": 192,
+        "MemorySize": 256,
         "CodeUri": "build",
         "Environment": {
           "Variables": {
