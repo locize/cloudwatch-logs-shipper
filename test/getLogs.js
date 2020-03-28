@@ -126,12 +126,46 @@ describe('getLogs', () => {
                   "    at Runtime.handleOnce (/var/runtime/Runtime.js:66:25)"
               ]
           }`
+        },
+        {
+          id: '02334567890123456789012345678901234567890123456789012345',
+          timestamp: 1584275477103,
+          message:
+          // eslint-disable-next-line no-tabs
+          `2020-03-28T15:20:09.673Z	ce3fe71f-4e3c-4701-a269-25ba9616728f	ERROR	Unhandled Promise Rejection 	
+{
+    "errorType": "Runtime.UnhandledPromiseRejection",
+    "errorMessage": "TypeError: Cannot read property 'toJSON' of undefined",
+    "reason": {
+        "errorType": "TypeError",
+        "errorMessage": "Cannot read property 'toJSON' of undefined",
+        "stack": [
+            "TypeError: Cannot read property 'toJSON' of undefined",
+            "    at $maini (eval at build (/var/task/node_modules/fast-json-stringify/index.js:136:20), <anonymous>:98:30)",
+            "    at Object.$main (eval at build (/var/task/node_modules/fast-json-stringify/index.js:136:20), <anonymous>:88:17)",
+            "    at serialize (/var/task/node_modules/fastify/lib/validation.js:132:41)",
+            "    at preserializeHookEnd (/var/task/node_modules/fastify/lib/reply.js:304:15)",
+            "    at next (/var/task/node_modules/fastify/lib/hooks.js:103:7)",
+            "    at handleResolve (/var/task/node_modules/fastify/lib/hooks.js:114:5)",
+            "    at processTicksAndRejections (internal/process/task_queues.js:97:5)"
+        ]
+    },
+    "promise": {},
+    "stack": [
+        "Runtime.UnhandledPromiseRejection: TypeError: Cannot read property 'toJSON' of undefined",
+        "    at process.<anonymous> (/var/runtime/index.js:35:15)",
+        "    at process.emit (events.js:311:20)",
+        "    at process.EventEmitter.emit (domain.js:482:12)",
+        "    at processPromiseRejections (internal/process/promises.js:209:33)",
+        "    at processTicksAndRejections (internal/process/task_queues.js:98:32)"
+    ]
+}`
         }]
     }
 
     it('should work as expected', () => {
       const logs = getLogs(testEvent)
-      should(logs).length(4)
+      should(logs).length(5)
       should(logs[0]).have.property('requestId', '00dc790e-2a09-4d3d-97f9-8d7d81dd231f')
       should(logs[0]).have.property('message', 'Unhandled Promise Rejection')
       should(logs[0]).have.property('errorMessage', 'TypeError: Cannot read property \'claims\' of undefined')
@@ -147,6 +181,10 @@ describe('getLogs', () => {
       should(logs[3]).have.property('errorMessage', 'No or wrong argument!')
       should(logs[3]).have.property('errorType', 'Error')
       should(logs[3]).have.property('stack')
+      should(logs[4]).have.property('requestId', 'ce3fe71f-4e3c-4701-a269-25ba9616728f')
+      should(logs[4]).have.property('message', 'Unhandled Promise Rejection')
+      should(logs[4]).have.property('errorMessage', 'TypeError: Cannot read property \'toJSON\' of undefined')
+      should(logs[4]).have.property('errorType', 'Runtime.UnhandledPromiseRejection')
     })
   })
 
