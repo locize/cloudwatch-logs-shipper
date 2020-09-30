@@ -9,8 +9,9 @@ exec('aws logs describe-log-groups --region eu-west-1', { env: process.env }, (e
   const resultJSON = JSON.parse(stdout)
   const desiredLogGroupNames = resultJSON.logGroups.filter((lg) => {
     return lg.logGroupName.indexOf(require('./package.json').name) < 0 &&
-           lg.logGroupName.indexOf('cloudwatch-alarm-to-slack') < 0 &&
-           lg.logGroupName.indexOf('logz-shipper') < 0
+           lg.logGroupName.indexOf('cloudwatch-alarm-to-slack') < 0// &&
+           //  lg.logGroupName.indexOf('logz-shipper') < 0 &&
+           //  (lg.logGroupName.indexOf('locize-dev-') > -1 || lg.logGroupName.indexOf('locize-prod-') > -1)
   }).map((lg) => lg.logGroupName)
 
   const appSam = require('./app-sam.json')
