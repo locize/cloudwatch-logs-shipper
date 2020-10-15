@@ -7,3 +7,5 @@ app-output_sam.json
 build
 deploy.sh
 app-sam-with-events.json
+customLogHandler.js
+customTemplateExtender.js

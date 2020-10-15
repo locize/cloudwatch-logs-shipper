@@ -3,6 +3,11 @@ const fs = require('fs')
 const path = require('path')
 const { createHash } = require('crypto')
 
+let customTemplateExtender
+try {
+  customTemplateExtender = require('./customTemplateExtender')
+} catch (e) {}
+
 exec('aws logs describe-log-groups --region eu-west-1', { env: process.env }, (err, stdout, stderr) => {
   if (err) return console.error(err)
 
@@ -14,7 +19,8 @@ exec('aws logs describe-log-groups --region eu-west-1', { env: process.env }, (e
            //  (lg.logGroupName.indexOf('locize-dev-') > -1 || lg.logGroupName.indexOf('locize-prod-') > -1)
   }).map((lg) => lg.logGroupName)
 
-  const appSam = require('./app-sam.json')
+  let appSam = require('./app-sam.json')
+  if (customTemplateExtender) appSam = customTemplateExtender(appSam) || appSam
   appSam.Resources.CloudWatchFunction.Properties.Events = desiredLogGroupNames.map((name) => ({
     Type: 'CloudWatchLogs',
     Properties: {

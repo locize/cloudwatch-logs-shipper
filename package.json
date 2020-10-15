@@ -13,6 +13,7 @@
     "test": "npm run lint && mocha --colors --reporter spec --recursive test"
   },
   "dependencies": {
+    "aws-sdk": "2.771.0",
     "logzio-nodejs": "2.0.2"
   },
   "devDependencies": {
