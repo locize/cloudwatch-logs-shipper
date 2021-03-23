@@ -16,6 +16,10 @@
     "ExportName": {
       "Type": "String",
       "Default": "Function::CloudWatch-Logs-Shipper::Arn"
+    },
+    "OmitStartAndEnd": {
+      "Type": "String",
+      "Default": "false"
     }
   },
   "Resources": {
@@ -40,6 +44,9 @@
             },
             "COMPRESS": {
               "Fn::Sub": "${Compress}"
+            },
+            "OMIT_START_AND_END": {
+              "Fn::Sub": "${OmitStartAndEnd}"
             }
           }
         },

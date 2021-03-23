@@ -16,7 +16,7 @@ module.exports.handler = async (event) => {
     compress: process.env.COMPRESS === 'true'
   })
   const extracted = await extract(event)
-  const logs = getLogs(extracted)
+  const logs = getLogs(extracted, { omitStartAndEnd: process.env.OMIT_START_AND_END === 'true' })
   try {
     if (customLogHandler) {
       const ret = customLogHandler(logs)
