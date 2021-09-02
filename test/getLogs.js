@@ -160,12 +160,19 @@ describe('getLogs', () => {
         "    at processTicksAndRejections (internal/process/task_queues.js:98:32)"
     ]
 }`
+        },
+        {
+          id: '01232567890123456789012345678901234567890123456789012345',
+          timestamp: 1584275477103,
+          message:
+            // eslint-disable-next-line no-tabs
+            '2021-09-02T08:08:47.102Z\tundefined\tERROR\tUncaught Exception \t{"errorType":"Error","errorMessage":"Must use import to load ES Module: /var/task/node_modules/node-fetch/src/index.js\\nrequire() of ES modules is not supported.\\nrequire() of /var/task/node_modules/node-fetch/src/index.js from /var/task/lib/project/lib/extendWithLocalistarsProjectInfos.js is an ES module file as it is a .js file whose nearest parent package.json contains \\"type\\": \\"module\\" which defines all .js files in that package scope as ES modules.\\nInstead rename index.js to end in .cjs, change the requiring code to use import(), or remove \\"type\\": \\"module\\" from /var/task/node_modules/node-fetch/package.json.\\n","code":"ERR_REQUIRE_ESM","stack":["Error [ERR_REQUIRE_ESM]: Must use import to load ES Module: /var/task/node_modules/node-fetch/src/index.js","require() of ES modules is not supported.","require() of /var/task/node_modules/node-fetch/src/index.js from /var/task/lib/project/lib/extendWithLocalistarsProjectInfos.js is an ES module file as it is a .js file whose nearest parent package.json contains \\"type\\": \\"module\\" which defines all .js files in that package scope as ES modules.","Instead rename index.js to end in .cjs, change the requiring code to use import(), or remove \\"type\\": \\"module\\" from /var/task/node_modules/node-fetch/package.json.","","    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1089:13)","    at Module.load (internal/modules/cjs/loader.js:937:32)","    at Function.Module._load (internal/modules/cjs/loader.js:778:12)","    at Module.require (internal/modules/cjs/loader.js:961:19)","    at require (internal/modules/cjs/helpers.js:92:18)","    at Object.<anonymous> (/var/task/lib/project/lib/extendWithLocalistarsProjectInfos.js:2:15)","    at Module._compile (internal/modules/cjs/loader.js:1072:14)","    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1101:10)","    at Module.load (internal/modules/cjs/loader.js:937:32)","    at Function.Module._load (internal/modules/cjs/loader.js:778:12)"]}'
         }]
     }
 
     it('should work as expected', () => {
       const logs = getLogs(testEvent)
-      should(logs).length(5)
+      should(logs).length(6)
       should(logs[0]).have.property('requestId', '00dc790e-2a09-4d3d-97f9-8d7d81dd231f')
       should(logs[0]).have.property('message', 'Unhandled Promise Rejection')
       should(logs[0]).have.property('errorMessage', 'TypeError: Cannot read property \'claims\' of undefined')
@@ -185,6 +192,13 @@ describe('getLogs', () => {
       should(logs[4]).have.property('message', 'Unhandled Promise Rejection')
       should(logs[4]).have.property('errorMessage', 'TypeError: Cannot read property \'toJSON\' of undefined')
       should(logs[4]).have.property('errorType', 'Runtime.UnhandledPromiseRejection')
+      should(logs[5]).have.property('requestId', 'undefined')
+      should(logs[5]).have.property('message', 'Uncaught Exception')
+      should(logs[5]).have.property('errorMessage', 'Must use import to load ES Module: /var/task/node_modules/node-fetch/src/index.js\n' +
+        'require() of ES modules is not supported.\n' +
+        'require() of /var/task/node_modules/node-fetch/src/index.js from /var/task/lib/project/lib/extendWithLocalistarsProjectInfos.js is an ES module file as it is a .js file whose nearest parent package.json contains "type": "module" which defines all .js files in that package scope as ES modules.\n' +
+        'Instead rename index.js to end in .cjs, change the requiring code to use import(), or remove "type": "module" from /var/task/node_modules/node-fetch/package.json.\n')
+      should(logs[5]).have.property('errorType', 'Error')
     })
   })
 
