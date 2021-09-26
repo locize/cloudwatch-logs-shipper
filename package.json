@@ -13,17 +13,16 @@
     "test": "npm run lint && mocha --colors --reporter spec --recursive test"
   },
   "dependencies": {
-    "aws-sdk": "2.896.0",
-    "logzio-nodejs": "2.0.2"
+    "logzio-nodejs": "2.0.3"
   },
   "devDependencies": {
-    "eslint": "7.25.0",
-    "eslint-config-standard": "16.0.2",
-    "eslint-plugin-import": "2.22.1",
+    "eslint": "7.32.0",
+    "eslint-config-standard": "16.0.3",
+    "eslint-plugin-import": "2.24.2",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "5.1.0",
     "eslint-plugin-standard": "5.0.0",
-    "mocha": "8.3.2",
+    "mocha": "9.1.2",
     "should": "13.2.3"
   }
 }

@@ -295,13 +295,18 @@ describe('getLogs', () => {
           id: '01234567890123456789012345678901234567892342345678902336',
           timestamp: 1484275477127,
           message: 'REPORT RequestId: 2b0cbe4b-1180-489f-949f-2ccd41d97c44\tDuration: 42.35 ms\tBilled Duration: 100 ms\tMemory Size: 768 MB\tMax Memory Used: 98 MB\tXRAY TraceId: 1-5e217425-b2c3bdff0cfb667d712a5880\tSegmentId: 2e3b43185b988b12\tSampled: true\t'
+        },
+        {
+          id: '13234567890123456789012345678901234567892342345678902336',
+          timestamp: 1484275477128,
+          message: 'REPORT RequestId: 971ab2a3-bb53-4bd5-b4eb-d96ba7272fdb\tDuration: 66538.52 ms\tBilled Duration: 66539 ms\tMemory Size: 1408 MB\tMax Memory Used: 408 MB\tInit Duration: 155.60 ms'
         }
       ]
     }
 
     it('should work as expected', () => {
       const logs = getLogs(testEvent)
-      should(logs).length(8)
+      should(logs).length(9)
       should(logs[0]).have.property('@timestamp')
       should(logs[0]).have.property('requestId', 'f6a55753-b02b-4b42-bcee-432133f66d26')
       should(logs[0]).have.property('message', 'START RequestId: f6a55753-b02b-4b42-bcee-432133f66d26 Version: blabla')
@@ -347,6 +352,14 @@ describe('getLogs', () => {
       should(logs[7]).have.property('xRayTraceId', '1-5e217425-b2c3bdff0cfb667d712a5880')
       should(logs[7]).have.property('segmentId', '2e3b43185b988b12')
       should(logs[7]).have.property('sampled', true)
+      should(logs[8]).have.property('message', 'REPORT RequestId: 971ab2a3-bb53-4bd5-b4eb-d96ba7272fdb\tDuration: 66538.52 ms\tBilled Duration: 66539 ms\tMemory Size: 1408 MB\tMax Memory Used: 408 MB\tInit Duration: 155.60 ms')
+      should(logs[8]).have.property('requestId', '971ab2a3-bb53-4bd5-b4eb-d96ba7272fdb')
+      should(logs[8]).have.property('duration', 66538.52)
+      should(logs[8]).have.property('billedDuration', 66539)
+      should(logs[8]).have.property('memorySize', 1408)
+      should(logs[8]).have.property('maxMemoryUsed', 408)
+      should(logs[8]).have.property('memoryDifference', 1000)
+      should(logs[8]).have.property('initDuration', 155.60)
     })
   })
 
