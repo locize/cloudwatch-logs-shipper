@@ -1,12 +1,11 @@
-const { exec } = require('child_process')
-const fs = require('fs')
-const path = require('path')
-const { createHash } = require('crypto')
+import { exec } from 'child_process'
+import { readFileSync, writeFile } from 'fs'
+import { join, dirname, existsSync } from 'path'
+import { fileURLToPath } from 'url'
+import { createHash } from 'crypto'
 
-let customTemplateExtender
-try {
-  customTemplateExtender = require('./customTemplateExtender')
-} catch (e) {}
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const hasCustomTemplateExtender = existsSync(join(__dirname, './customTemplateExtender.js'))
 
 exec('aws logs describe-log-groups --region eu-west-1', { env: process.env }, (err, stdout, stderr) => {
   if (err) return console.error(err)
@@ -19,22 +18,30 @@ exec('aws logs describe-log-groups --region eu-west-1', { env: process.env }, (e
            //  (lg.logGroupName.indexOf('locize-dev-') > -1 || lg.logGroupName.indexOf('locize-prod-') > -1)
   }).map((lg) => lg.logGroupName)
 
-  let appSam = require('./app-sam.json')
-  if (customTemplateExtender) appSam = customTemplateExtender(appSam) || appSam
-  appSam.Resources.CloudWatchFunction.Properties.Events = desiredLogGroupNames.map((name) => ({
-    Type: 'CloudWatchLogs',
-    Properties: {
-      LogGroupName: name,
-      FilterPattern: ''
-    }
-  })).reduce((prev, curr) => {
-    const hasher = createHash('md5')
-    hasher.update(curr.Properties.LogGroupName)
-    prev[hasher.digest('hex')] = curr
-    return prev
-  }, {})
+  let appSam = JSON.parse(readFileSync(new URL('./app-sam.json', import.meta.url)))
 
-  fs.writeFile(path.join(__dirname, 'app-sam-with-events.json'), JSON.stringify(appSam, null, 2), (err) => {
-    if (err) console.error(err)
+  function finish () {
+    appSam.Resources.CloudWatchFunction.Properties.Events = desiredLogGroupNames.map((name) => ({
+      Type: 'CloudWatchLogs',
+      Properties: {
+        LogGroupName: name,
+        FilterPattern: ''
+      }
+    })).reduce((prev, curr) => {
+      const hasher = createHash('md5')
+      hasher.update(curr.Properties.LogGroupName)
+      prev[hasher.digest('hex')] = curr
+      return prev
+    }, {})
+
+    writeFile(join(__dirname, 'app-sam-with-events.json'), JSON.stringify(appSam, null, 2), (err) => {
+      if (err) console.error(err)
+    })
+  }
+  if (!hasCustomTemplateExtender) return finish()
+
+  import('./customTemplateExtender.js').then((ret) => {
+    appSam = ret.default(appSam) || appSam
+    finish()
   })
 })

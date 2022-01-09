@@ -1,5 +1,5 @@
-const should = require('should')
-const getLogs = require('../lib/getLogs')
+import should from 'should'
+import getLogs from '../lib/getLogs.js'
 
 describe('getLogs', () => {
   const testEvent = {

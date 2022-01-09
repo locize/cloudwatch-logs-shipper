@@ -1,14 +1,14 @@
-const getLogger = require('./lib/getLogger')
-const finish = require('./lib/finish')
-const extract = require('./lib/extract')
-const getLogs = require('./lib/getLogs')
+import getLogger from './lib/getLogger.js'
+import finish from './lib/finish.js'
+import extract from './lib/extract.js'
+import getLogs from './lib/getLogs.js'
+import { join, dirname, existsSync } from 'path'
+import { fileURLToPath } from 'url'
 
-let customLogHandler
-try {
-  customLogHandler = require('./customLogHandler')
-} catch (e) {}
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const hasCustomLogHandler = existsSync(join(__dirname, './customLogHandler.js'))
 
-module.exports.handler = async (event) => {
+export const handler = async (event) => {
   const logger = getLogger({
     token: process.env.TOKEN,
     host: process.env.HOST,
@@ -18,7 +18,8 @@ module.exports.handler = async (event) => {
   const extracted = await extract(event)
   const logs = getLogs(extracted, { omitStartAndEnd: process.env.OMIT_START_AND_END === 'true' })
   try {
-    if (customLogHandler) {
+    if (hasCustomLogHandler) {
+      const customLogHandler = (await import('./customLogHandler.js')).default
       const ret = customLogHandler(logs)
       if (ret && typeof ret.then === 'function') await ret
     }

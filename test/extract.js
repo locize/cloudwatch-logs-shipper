@@ -1,5 +1,5 @@
-const should = require('should')
-const extract = require('../lib/extract')
+import should from 'should'
+import extract from '../lib/extract.js'
 
 describe('extract', () => {
   const testEvent = {
