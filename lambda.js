@@ -2,7 +2,8 @@ import getLogger from './lib/getLogger.js'
 import finish from './lib/finish.js'
 import extract from './lib/extract.js'
 import getLogs from './lib/getLogs.js'
-import { join, dirname, existsSync } from 'path'
+import { existsSync } from 'fs'
+import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))

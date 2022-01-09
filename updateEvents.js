@@ -1,6 +1,6 @@
 import { exec } from 'child_process'
-import { readFileSync, writeFile } from 'fs'
-import { join, dirname, existsSync } from 'path'
+import { readFileSync, writeFile, existsSync } from 'fs'
+import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { createHash } from 'crypto'
 
