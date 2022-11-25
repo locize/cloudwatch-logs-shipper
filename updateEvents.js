@@ -16,7 +16,8 @@ exec('aws logs describe-log-groups --region eu-west-1', { env: process.env }, (e
   const desiredLogGroupNames = resultJSON.logGroups.filter((lg) => {
     return lg.logGroupName.indexOf(pkg.name) < 0 &&
            lg.logGroupName.indexOf('cloudwatch-alarm-to-slack') < 0 &&
-           lg.logGroupName.indexOf('API-Gateway') < 0 // &&
+           lg.logGroupName.indexOf('API-Gateway') < 0 &&
+           (!process.env.ENVIRONMENT || lg.logGroupName.indexOf(`-${process.env.ENVIRONMENT}-`) > 0) // &&
            //  (lg.logGroupName.indexOf('locize-dev-') > -1 || lg.logGroupName.indexOf('locize-prod-') > -1)
   }).map((lg) => lg.logGroupName)
 
