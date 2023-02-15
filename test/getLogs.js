@@ -382,6 +382,11 @@ describe('getLogs', () => {
           message: 'START RequestId: f6a55753-b02b-4b42-bcee-432133f66d26 Version: 937'
         },
         {
+          id: '01234567890123456789012345678901234567890123456789012145',
+          timestamp: 1484275477103,
+          message: 'INIT_START Runtime Version: nodejs:18.v4\tRuntime Version ARN: arn:aws:lambda:eu-west-1::runtime:cfb8ef15d2d94e247924207a1fe0d5b733cbded89607d2a0d020a11c7a95fde6'
+        },
+        {
           id: '01234567890123456789012345678901234567890123456789012345',
           timestamp: 1484275477103,
           message: 'END RequestId: f6a55753-b02b-4b42-bcee-432133f66d26'
