@@ -20,6 +20,10 @@
     "OmitStartAndEnd": {
       "Type": "String",
       "Default": "false"
+    },
+    "ReduceReport": {
+      "Type": "String",
+      "Default": "true"
     }
   },
   "Resources": {
@@ -47,6 +51,9 @@
             },
             "OMIT_START_AND_END": {
               "Fn::Sub": "${OmitStartAndEnd}"
+            },
+            "REDUCE_REPORT": {
+              "Fn::Sub": "${ReduceReport}"
             }
           }
         },

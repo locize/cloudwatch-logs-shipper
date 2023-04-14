@@ -363,7 +363,7 @@ describe('getLogs', () => {
     })
   })
 
-  describe('of default output with omitStartAndEnd set to true', () => {
+  describe('of default output with omitStartAndEnd set to true and reduceReport', () => {
     const testEvent = {
       messageType: 'DATA_MESSAGE',
       owner: '000000000000',
@@ -420,26 +420,29 @@ describe('getLogs', () => {
     }
 
     it('should work as expected', () => {
-      const logs = getLogs(testEvent, { omitStartAndEnd: true })
+      const logs = getLogs(testEvent, { omitStartAndEnd: true, reduceReport: true })
       should(logs).length(5)
       should(logs[0]).have.property('@timestamp')
       should(logs[0]).have.property('requestId', 'f6a55753-b02b-4b42-bcee-432133f66d26')
       // eslint-disable-next-line no-tabs
-      should(logs[0]).have.property('message', 'REPORT RequestId: f6a55753-b02b-4b42-bcee-432133f66d26\tDuration: 9.34 ms\tBilled Duration: 100 ms \tMemory Size: 192 MB\tMax Memory Used: 70 MB')
+      // should(logs[0]).have.property('message', 'REPORT RequestId: f6a55753-b02b-4b42-bcee-432133f66d26\tDuration: 9.34 ms\tBilled Duration: 100 ms \tMemory Size: 192 MB\tMax Memory Used: 70 MB')
+      should(logs[0]).have.property('message', 'REPORT RequestId: f6a55753-b02b-4b42-bcee-432133f66d26')
       should(logs[0]).have.property('duration', 9.34)
       should(logs[0]).have.property('billedDuration', 100)
       should(logs[0]).have.property('memorySize', 192)
       should(logs[0]).have.property('maxMemoryUsed', 70)
       should(logs[0]).have.property('memoryDifference', 122)
       // eslint-disable-next-line no-tabs
-      should(logs[1]).have.property('message', 'REPORT RequestId: a1d3049c-3185-4852-8b45-aec8f2d4107d Duration: 2888.47 ms Billed Duration: 2900 ms Memory Size: 192 MB Max Memory Used: 98 MB Init Duration: 474.27 ms\nXRAY TraceId: 1-5d77b095-7b10875864d08196cbad28d6 SegmentId: 3fd69a1119839b2c Sampled: false')
+      // should(logs[1]).have.property('message', 'REPORT RequestId: a1d3049c-3185-4852-8b45-aec8f2d4107d Duration: 2888.47 ms Billed Duration: 2900 ms Memory Size: 192 MB Max Memory Used: 98 MB Init Duration: 474.27 ms\nXRAY TraceId: 1-5d77b095-7b10875864d08196cbad28d6 SegmentId: 3fd69a1119839b2c Sampled: false')
+      should(logs[1]).have.property('message', 'REPORT RequestId: a1d3049c-3185-4852-8b45-aec8f2d4107d')
       should(logs[1]).have.property('duration', 2888.47)
       should(logs[1]).have.property('billedDuration', 2900)
       should(logs[1]).have.property('memorySize', 192)
       should(logs[1]).have.property('maxMemoryUsed', 98)
       should(logs[1]).have.property('memoryDifference', 94)
       // eslint-disable-next-line no-tabs
-      should(logs[2]).have.property('message', 'REPORT RequestId: 931635bd-4d2b-499e-a591-3f55ef31e1e0\tDuration: 57.07 ms\tBilled Duration: 100 ms\tMemory Size: 192 MB\tMax Memory Used: 167 MB')
+      // should(logs[2]).have.property('message', 'REPORT RequestId: 931635bd-4d2b-499e-a591-3f55ef31e1e0\tDuration: 57.07 ms\tBilled Duration: 100 ms\tMemory Size: 192 MB\tMax Memory Used: 167 MB')
+      should(logs[2]).have.property('message', 'REPORT RequestId: 931635bd-4d2b-499e-a591-3f55ef31e1e0')
       should(logs[2]).have.property('duration', 57.07)
       should(logs[2]).have.property('billedDuration', 100)
       should(logs[2]).have.property('memorySize', 192)
@@ -447,7 +450,8 @@ describe('getLogs', () => {
       should(logs[2]).have.property('memoryDifference', 25)
       should(logs[3]).have.property('message', '2020-01-14T07:39:49.657Z 63a96020-4e07-4676-81a3-66fd47ed4815 Task timed out after 30.03 seconds')
       should(logs[3]).have.property('requestId', '63a96020-4e07-4676-81a3-66fd47ed4815')
-      should(logs[4]).have.property('message', 'REPORT RequestId: 2b0cbe4b-1180-489f-949f-2ccd41d97c44\tDuration: 42.35 ms\tBilled Duration: 100 ms\tMemory Size: 768 MB\tMax Memory Used: 98 MB\tXRAY TraceId: 1-5e217425-b2c3bdff0cfb667d712a5880\tSegmentId: 2e3b43185b988b12\tSampled: true')
+      // should(logs[4]).have.property('message', 'REPORT RequestId: 2b0cbe4b-1180-489f-949f-2ccd41d97c44\tDuration: 42.35 ms\tBilled Duration: 100 ms\tMemory Size: 768 MB\tMax Memory Used: 98 MB\tXRAY TraceId: 1-5e217425-b2c3bdff0cfb667d712a5880\tSegmentId: 2e3b43185b988b12\tSampled: true')
+      should(logs[4]).have.property('message', 'REPORT RequestId: 2b0cbe4b-1180-489f-949f-2ccd41d97c44')
       should(logs[4]).have.property('requestId', '2b0cbe4b-1180-489f-949f-2ccd41d97c44')
       should(logs[4]).have.property('duration', 42.35)
       should(logs[4]).have.property('billedDuration', 100)
