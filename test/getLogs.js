@@ -462,4 +462,51 @@ describe('getLogs', () => {
       should(logs[4]).have.property('sampled', true)
     })
   })
+
+  describe('of log as json format', () => {
+    const testEvent = {
+      messageType: 'DATA_MESSAGE',
+      owner: '000000000000',
+      logGroup: 'test-log-group',
+      logStream: 'test-log-stream',
+      subscriptionFilters: [ 'test-filter' ],
+      logEvents: [
+        {
+          id: '01234567890123456789012345678901234567890123456789012345',
+          timestamp: 1484275477103,
+          message:
+            // eslint-disable-next-line no-tabs
+            `{
+              "timestamp": "2023-12-05T13:05:41.609Z",
+              "level": "ERROR",
+              "requestId": "f594a0b0-e822-4aa7-b09a-2c99ad78d142",
+              "message": "console.error"
+          }`
+        },
+        {
+          id: '11234567890123456789012345678901234567890123456789012345',
+          timestamp: 1484275477103,
+          message:
+            // eslint-disable-next-line no-tabs
+            `{
+              "timestamp": "2023-12-05T13:05:41.610Z",
+              "level": "ERROR",
+              "requestId": "f594a0b0-e822-4aa7-b09a-2c99ad78d142",
+              "message": "{\\"message\\":\\"this is a test message\\",\\"someProps\\":\\"and some props\\"}"
+          }`
+        }]
+    }
+
+    it('should work as expected', () => {
+      const logs = getLogs(testEvent)
+      should(logs).length(2)
+      should(logs[0]).have.property('requestId', 'f594a0b0-e822-4aa7-b09a-2c99ad78d142')
+      should(logs[0]).have.property('message', 'console.error')
+      should(logs[0]).have.property('level', 'ERROR')
+      should(logs[1]).have.property('requestId', 'f594a0b0-e822-4aa7-b09a-2c99ad78d142')
+      should(logs[1]).have.property('message', 'this is a test message')
+      should(logs[1]).have.property('level', 'ERROR')
+      should(logs[1]).have.property('someProps', 'and some props')
+    })
+  })
 })
