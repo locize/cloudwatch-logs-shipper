@@ -494,12 +494,33 @@ describe('getLogs', () => {
               "requestId": "f594a0b0-e822-4aa7-b09a-2c99ad78d142",
               "message": "{\\"message\\":\\"this is a test message\\",\\"someProps\\":\\"and some props\\"}"
           }`
+        },
+        {
+          id: '11234567890123456789012345678901234567890123456789012345',
+          timestamp: 1484275477103,
+          message:
+            // eslint-disable-next-line no-tabs
+            `{
+              "time": "2023-12-05T13:57:05.654Z",
+              "type": "platform.report",
+              "record": {
+                  "requestId": "1dcde970-67d2-4149-b1f3-18bc7b3408f9",
+                  "metrics": {
+                      "durationMs": 1490.309,
+                      "billedDurationMs": 1491,
+                      "memorySizeMB": 192,
+                      "maxMemoryUsedMB": 95,
+                      "initDurationMs": 186.997
+                  },
+                  "status": "success"
+              }
+          }`
         }]
     }
 
     it('should work as expected', () => {
       const logs = getLogs(testEvent)
-      should(logs).length(2)
+      should(logs).length(3)
       should(logs[0]).have.property('requestId', 'f594a0b0-e822-4aa7-b09a-2c99ad78d142')
       should(logs[0]).have.property('message', 'console.error')
       should(logs[0]).have.property('level', 'ERROR')
@@ -507,6 +528,13 @@ describe('getLogs', () => {
       should(logs[1]).have.property('message', 'this is a test message')
       should(logs[1]).have.property('level', 'ERROR')
       should(logs[1]).have.property('someProps', 'and some props')
+      should(logs[2]).have.property('requestId', '1dcde970-67d2-4149-b1f3-18bc7b3408f9')
+      should(logs[2]).have.property('type', 'platform.report')
+      should(logs[2]).have.property('duration', 1490.309)
+      should(logs[2]).have.property('billedDuration', 1491)
+      should(logs[2]).have.property('memorySize', 192)
+      should(logs[2]).have.property('maxMemoryUsed', 95)
+      should(logs[2]).have.property('memoryDifference', 97)
     })
   })
 })
