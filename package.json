@@ -14,8 +14,8 @@
     "test": "npm run lint && mocha --colors --reporter spec --recursive test"
   },
   "dependencies": {
-    "@aws-sdk/client-lambda": "3.698.0",
-    "logzio-nodejs": "2.1.8"
+    "@aws-sdk/client-lambda": "3.888.0",
+    "logzio-nodejs": "2.5.0"
   },
   "devDependencies": {
     "eslint": "8.57.1",
@@ -24,7 +24,7 @@
     "eslint-plugin-n": "16.6.2",
     "eslint-plugin-promise": "6.6.0",
     "eslint-plugin-standard": "5.0.0",
-    "mocha": "10.8.2",
+    "mocha": "11.7.2",
     "should": "13.2.3"
   }
 }
