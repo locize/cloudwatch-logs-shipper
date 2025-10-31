@@ -17,7 +17,9 @@ export const handler = async (event) => {
     compress: process.env.COMPRESS === 'true'
   })
   const extracted = await extract(event)
-  const logs = getLogs(extracted, { omitStartAndEnd: process.env.OMIT_START_AND_END === 'true', reduceReport: process.env.REDUCE_REPORT !== 'false' })
+  let omit = []
+  if (process.env.OMIT && process.env.OMIT.length > 0) omit = process.env.OMIT.split(',')
+  const logs = getLogs(extracted, { omitStartAndEnd: process.env.OMIT_START_AND_END === 'true', reduceReport: process.env.REDUCE_REPORT !== 'false', omit })
   try {
     if (hasCustomLogHandler) {
       const customLogHandler = (await import('./customLogHandler.js')).default

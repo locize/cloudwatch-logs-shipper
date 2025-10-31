@@ -24,6 +24,14 @@
     "ReduceReport": {
       "Type": "String",
       "Default": "true"
+    },
+    "Type": {
+      "Type": "String",
+      "Default": "nodejs"
+    },
+    "Omit": {
+      "Type": "String",
+      "Default": ""
     }
   },
   "Resources": {
@@ -54,6 +62,12 @@
             },
             "REDUCE_REPORT": {
               "Fn::Sub": "${ReduceReport}"
+            },
+            "TYPE": {
+              "Fn::Sub": "${Type}"
+            },
+            "OMIT": {
+              "Fn::Sub": "${Omit}"
             }
           }
         },
