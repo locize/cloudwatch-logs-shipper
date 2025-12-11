@@ -5,7 +5,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint . --fix",
     "updateEvents": "node updateEvents.js",
     "build": "npm run lint && rm -rf build && packageName=$(npm pack) && tar -xvzf $packageName && mv package build && rm $packageName && cd build && npm i --production && rm -f package-lock.json && cd ..",
     "cf_package": "npm run updateEvents && npm run build && aws cloudformation package --template-file app-sam-with-events.json --s3-bucket $S3_BUCKET --output-template-file app-output_sam.yaml",
@@ -14,17 +14,14 @@
     "test": "npm run lint && mocha --colors --reporter spec --recursive test"
   },
   "dependencies": {
-    "@aws-sdk/client-lambda": "3.921.0",
+    "@aws-sdk/client-lambda": "3.948.0",
     "logzio-nodejs": "2.5.0"
   },
   "devDependencies": {
-    "eslint": "8.57.1",
-    "eslint-config-standard": "17.1.0",
-    "eslint-plugin-import": "2.31.0",
-    "eslint-plugin-n": "16.6.2",
-    "eslint-plugin-promise": "6.6.0",
-    "eslint-plugin-standard": "5.0.0",
-    "mocha": "11.7.4",
+    "eslint": "9.39.1",
+    "eslint-plugin-import": "2.32.0",
+    "mocha": "11.7.5",
+    "neostandard": "0.12.2",
     "should": "13.2.3"
   }
 }

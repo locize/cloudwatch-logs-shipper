@@ -1,3 +1,4 @@
+/* eslint-disable @stylistic/no-tabs */
 import should from 'should'
 import getLogs from '../lib/getLogs.js'
 
@@ -7,7 +8,7 @@ describe('getLogs', () => {
     owner: '000000000000',
     logGroup: '/aws/lambda/test-log-group',
     logStream: 'test-log-stream',
-    subscriptionFilters: [ 'test-filter' ],
+    subscriptionFilters: ['test-filter'],
     logEvents: [
       {
         id: '01234567890123456789012345678901234567890123456789012345',
@@ -19,7 +20,7 @@ describe('getLogs', () => {
         id: '12345678901234567890123456789012345678901234567890123456',
         timestamp: 1484275477113,
         message: '[ERROR] Example error message.'
-      } ]
+      }]
   }
 
   it('should work as expected', () => {
@@ -41,14 +42,12 @@ describe('getLogs', () => {
       owner: '000000000000',
       logGroup: 'test-log-group',
       logStream: 'test-log-stream',
-      subscriptionFilters: [ 'test-filter' ],
+      subscriptionFilters: ['test-filter'],
       logEvents: [
         {
           id: '01234567890123456789012345678901234567890123456789012345',
           timestamp: 1484275477103,
-          message:
-            // eslint-disable-next-line no-tabs
-            `2019-04-05T13:30:48.634Z	00dc790e-2a09-4d3d-97f9-8d7d81dd231f	ERROR	Unhandled Promise Rejection
+          message: `2019-04-05T13:30:48.634Z	00dc790e-2a09-4d3d-97f9-8d7d81dd231f	ERROR	Unhandled Promise Rejection
 {
     "errorType": "Runtime.UnhandledPromiseRejection",
     "errorMessage": "TypeError: Cannot read property 'claims' of undefined",
@@ -79,7 +78,6 @@ describe('getLogs', () => {
           id: '01234567890123456789012345678901234567890123456789012345',
           timestamp: 1484275477103,
           message:
-            // eslint-disable-next-line no-tabs
             `2019-04-05T13:30:48.634Z	00dc790e-2a09-4d3d-97f9-8d7d81dd231e
 {
     "message": "dev | user 3a511eb7-8927-4941-abe8-fa09d0036db7 called GET /api/echo",
@@ -97,7 +95,6 @@ describe('getLogs', () => {
           id: '01234567890123456789012345678901234567890123456789012346',
           timestamp: 1484275477104,
           message:
-            // eslint-disable-next-line no-tabs
             `2019-04-05T13:30:48.635Z	00dc790e-2a09-4d3d-97f9-8d7d81dd231e
 {
     "message": "dev | user 3a511eb7-8927-4941-abe8-fa09d0036db7 called GET /api/echo",
@@ -114,7 +111,6 @@ describe('getLogs', () => {
         {
           id: '01234567890123456789012345678901234567890123456389012324',
           timestamp: 1484275497106,
-          // eslint-disable-next-line no-tabs,quotes,no-useless-escape
           message: `2020-03-09T18:27:45.244Z	eb2685ce-6078-4f95-8180-1601153d2692	ERROR	Invoke Error 	
           {
               "errorType": "Error",
@@ -131,7 +127,6 @@ describe('getLogs', () => {
           id: '02334567890123456789012345678901234567890123456789012345',
           timestamp: 1584275477103,
           message:
-          // eslint-disable-next-line no-tabs
           `2020-03-28T15:20:09.673Z	ce3fe71f-4e3c-4701-a269-25ba9616728f	ERROR	Unhandled Promise Rejection 	
 {
     "errorType": "Runtime.UnhandledPromiseRejection",
@@ -165,7 +160,6 @@ describe('getLogs', () => {
           id: '01232567890123456789012345678901234567890123456789012345',
           timestamp: 1584275477103,
           message:
-            // eslint-disable-next-line no-tabs
             '2021-09-02T08:08:47.102Z\tundefined\tERROR\tUncaught Exception \t{"errorType":"Error","errorMessage":"Must use import to load ES Module: /var/task/node_modules/node-fetch/src/index.js\\nrequire() of ES modules is not supported.\\nrequire() of /var/task/node_modules/node-fetch/src/index.js from /var/task/lib/project/lib/extendWithLocalistarsProjectInfos.js is an ES module file as it is a .js file whose nearest parent package.json contains \\"type\\": \\"module\\" which defines all .js files in that package scope as ES modules.\\nInstead rename index.js to end in .cjs, change the requiring code to use import(), or remove \\"type\\": \\"module\\" from /var/task/node_modules/node-fetch/package.json.\\n","code":"ERR_REQUIRE_ESM","stack":["Error [ERR_REQUIRE_ESM]: Must use import to load ES Module: /var/task/node_modules/node-fetch/src/index.js","require() of ES modules is not supported.","require() of /var/task/node_modules/node-fetch/src/index.js from /var/task/lib/project/lib/extendWithLocalistarsProjectInfos.js is an ES module file as it is a .js file whose nearest parent package.json contains \\"type\\": \\"module\\" which defines all .js files in that package scope as ES modules.","Instead rename index.js to end in .cjs, change the requiring code to use import(), or remove \\"type\\": \\"module\\" from /var/task/node_modules/node-fetch/package.json.","","    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1089:13)","    at Module.load (internal/modules/cjs/loader.js:937:32)","    at Function.Module._load (internal/modules/cjs/loader.js:778:12)","    at Module.require (internal/modules/cjs/loader.js:961:19)","    at require (internal/modules/cjs/helpers.js:92:18)","    at Object.<anonymous> (/var/task/lib/project/lib/extendWithLocalistarsProjectInfos.js:2:15)","    at Module._compile (internal/modules/cjs/loader.js:1072:14)","    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1101:10)","    at Module.load (internal/modules/cjs/loader.js:937:32)","    at Function.Module._load (internal/modules/cjs/loader.js:778:12)"]}'
         }]
     }
@@ -208,24 +202,24 @@ describe('getLogs', () => {
       owner: '000000000000',
       logGroup: 'test-log-group',
       logStream: 'test-log-stream',
-      subscriptionFilters: [ 'test-filter' ],
+      subscriptionFilters: ['test-filter'],
       logEvents: [
         {
           id: '01234567890123456789012345678901234567890123456789012345',
           timestamp: 1484275477103,
-          // eslint-disable-next-line no-tabs
+
           message: '2019-04-05T12:55:41.511Z	187d6e46-a992-442f-865a-2cd194c7297e	calling action incrementModifications...'
         },
         {
           id: '01234567890123456789012345678901234567890123456789012346',
           timestamp: 1484275477104,
-          // eslint-disable-next-line no-tabs
+
           message: '2019-04-05T12:55:41.512Z	187d6e46-a992-442f-865a-2cd194c7297f	INFO	this is from node 10 runtime...'
         },
         {
           id: '01234567890123456789012345678901234567890123456789012347',
           timestamp: 1484275477105,
-          // eslint-disable-next-line no-tabs
+
           message: '2019-04-05T12:55:41.513Z	187d6e46-a992-442f-865a-2cd194c7297d	ERROR	this is from node 10 runtime too...'
         }
       ]
@@ -254,7 +248,7 @@ describe('getLogs', () => {
       owner: '000000000000',
       logGroup: 'test-log-group',
       logStream: 'test-log-stream',
-      subscriptionFilters: [ 'test-filter' ],
+      subscriptionFilters: ['test-filter'],
       logEvents: [
         {
           id: '01234567890123456789012345678901234567890123456789012345',
@@ -320,21 +314,21 @@ describe('getLogs', () => {
       should(logs[2]).have.property('message', 'END RequestId: f6a55753-b02b-4b42-bcee-432133f66d26')
       should(logs[3]).have.property('@timestamp')
       should(logs[3]).have.property('requestId', 'f6a55753-b02b-4b42-bcee-432133f66d26')
-      // eslint-disable-next-line no-tabs
+
       should(logs[3]).have.property('message', 'REPORT RequestId: f6a55753-b02b-4b42-bcee-432133f66d26\tDuration: 9.34 ms\tBilled Duration: 100 ms \tMemory Size: 192 MB\tMax Memory Used: 70 MB')
       should(logs[3]).have.property('duration', 9.34)
       should(logs[3]).have.property('billedDuration', 100)
       should(logs[3]).have.property('memorySize', 192)
       should(logs[3]).have.property('maxMemoryUsed', 70)
       should(logs[3]).have.property('memoryDifference', 122)
-      // eslint-disable-next-line no-tabs
+
       should(logs[4]).have.property('message', 'REPORT RequestId: a1d3049c-3185-4852-8b45-aec8f2d4107d Duration: 2888.47 ms Billed Duration: 2900 ms Memory Size: 192 MB Max Memory Used: 98 MB Init Duration: 474.27 ms\nXRAY TraceId: 1-5d77b095-7b10875864d08196cbad28d6 SegmentId: 3fd69a1119839b2c Sampled: false')
       should(logs[4]).have.property('duration', 2888.47)
       should(logs[4]).have.property('billedDuration', 2900)
       should(logs[4]).have.property('memorySize', 192)
       should(logs[4]).have.property('maxMemoryUsed', 98)
       should(logs[4]).have.property('memoryDifference', 94)
-      // eslint-disable-next-line no-tabs
+
       should(logs[5]).have.property('message', 'REPORT RequestId: 931635bd-4d2b-499e-a591-3f55ef31e1e0\tDuration: 57.07 ms\tBilled Duration: 100 ms\tMemory Size: 192 MB\tMax Memory Used: 167 MB')
       should(logs[5]).have.property('duration', 57.07)
       should(logs[5]).have.property('billedDuration', 100)
@@ -369,7 +363,7 @@ describe('getLogs', () => {
       owner: '000000000000',
       logGroup: 'test-log-group',
       logStream: 'test-log-stream',
-      subscriptionFilters: [ 'test-filter' ],
+      subscriptionFilters: ['test-filter'],
       logEvents: [
         {
           id: '01234567890123456789012345678901234567890123456789012345',
@@ -424,7 +418,7 @@ describe('getLogs', () => {
       should(logs).length(5)
       should(logs[0]).have.property('@timestamp')
       should(logs[0]).have.property('requestId', 'f6a55753-b02b-4b42-bcee-432133f66d26')
-      // eslint-disable-next-line no-tabs
+
       // should(logs[0]).have.property('message', 'REPORT RequestId: f6a55753-b02b-4b42-bcee-432133f66d26\tDuration: 9.34 ms\tBilled Duration: 100 ms \tMemory Size: 192 MB\tMax Memory Used: 70 MB')
       should(logs[0]).have.property('message', 'REPORT RequestId: f6a55753-b02b-4b42-bcee-432133f66d26')
       should(logs[0]).have.property('duration', 9.34)
@@ -432,7 +426,7 @@ describe('getLogs', () => {
       should(logs[0]).have.property('memorySize', 192)
       should(logs[0]).have.property('maxMemoryUsed', 70)
       should(logs[0]).have.property('memoryDifference', 122)
-      // eslint-disable-next-line no-tabs
+
       // should(logs[1]).have.property('message', 'REPORT RequestId: a1d3049c-3185-4852-8b45-aec8f2d4107d Duration: 2888.47 ms Billed Duration: 2900 ms Memory Size: 192 MB Max Memory Used: 98 MB Init Duration: 474.27 ms\nXRAY TraceId: 1-5d77b095-7b10875864d08196cbad28d6 SegmentId: 3fd69a1119839b2c Sampled: false')
       should(logs[1]).have.property('message', 'REPORT RequestId: a1d3049c-3185-4852-8b45-aec8f2d4107d')
       should(logs[1]).have.property('duration', 2888.47)
@@ -440,7 +434,7 @@ describe('getLogs', () => {
       should(logs[1]).have.property('memorySize', 192)
       should(logs[1]).have.property('maxMemoryUsed', 98)
       should(logs[1]).have.property('memoryDifference', 94)
-      // eslint-disable-next-line no-tabs
+
       // should(logs[2]).have.property('message', 'REPORT RequestId: 931635bd-4d2b-499e-a591-3f55ef31e1e0\tDuration: 57.07 ms\tBilled Duration: 100 ms\tMemory Size: 192 MB\tMax Memory Used: 167 MB')
       should(logs[2]).have.property('message', 'REPORT RequestId: 931635bd-4d2b-499e-a591-3f55ef31e1e0')
       should(logs[2]).have.property('duration', 57.07)
@@ -469,13 +463,13 @@ describe('getLogs', () => {
       owner: '000000000000',
       logGroup: 'test-log-group',
       logStream: 'test-log-stream',
-      subscriptionFilters: [ 'test-filter' ],
+      subscriptionFilters: ['test-filter'],
       logEvents: [
         {
           id: '01234567890123456789012345678901234567890123456789012345',
           timestamp: 1484275477103,
           message:
-            // eslint-disable-next-line no-tabs
+
             `{
               "timestamp": "2023-12-05T13:05:41.609Z",
               "level": "ERROR",
@@ -487,7 +481,7 @@ describe('getLogs', () => {
           id: '11234567890123456789012345678901234567890123456789012345',
           timestamp: 1484275477103,
           message:
-            // eslint-disable-next-line no-tabs
+
             `{
               "timestamp": "2023-12-05T13:05:41.610Z",
               "level": "ERROR",
@@ -499,7 +493,6 @@ describe('getLogs', () => {
           id: '11234567890123456789012345678901234567890123456789012345',
           timestamp: 1484275477103,
           message:
-            // eslint-disable-next-line no-tabs
             `{
               "time": "2023-12-05T13:57:05.654Z",
               "type": "platform.report",

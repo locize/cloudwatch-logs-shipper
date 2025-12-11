@@ -12,7 +12,7 @@ describe('extract', () => {
     owner: '000000000000',
     logGroup: 'test-log-group',
     logStream: 'test-log-stream',
-    subscriptionFilters: [ 'test-filter' ],
+    subscriptionFilters: ['test-filter'],
     logEvents: [
       {
         id: '01234567890123456789012345678901234567890123456789012345',
@@ -24,7 +24,7 @@ describe('extract', () => {
         id: '12345678901234567890123456789012345678901234567890123456',
         timestamp: 1484275477113,
         message: '[ERROR] Example error message.'
-      } ]
+      }]
   }
 
   it('should work as expected', async () => {
