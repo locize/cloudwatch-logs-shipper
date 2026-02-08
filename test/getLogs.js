@@ -530,4 +530,55 @@ describe('getLogs', () => {
       should(logs[2]).have.property('memoryDifference', 97)
     })
   })
+
+  describe('of init errors', () => {
+    const testEvent = {
+      messageType: 'DATA_MESSAGE',
+      owner: '000000000000',
+      logGroup: 'test-log-group',
+      logStream: 'test-log-stream',
+      subscriptionFilters: ['test-filter'],
+      logEvents: [
+        {
+          id: '01234567890123456789012345678901234567890123456789012345',
+          timestamp: 1707411467708,
+          message: `2026-02-08T16:57:47.708Z	-	ERROR	Init Error 	
+{
+    "errorType": "Error",
+    "errorMessage": "Cannot find module '/var/settings.js' imported from /var/task/lib/project/routes/removeProjectFromCollectiveBilling.js",
+    "code": "ERR_MODULE_NOT_FOUND",
+    "url": "file:///var/settings.js",
+    "stack": [
+        "Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/var/settings.js' imported from /var/task/lib/project/routes/removeProjectFromCollectiveBilling.js",
+        "    at finalizeResolution (node:internal/modules/esm/resolve:280:11)",
+        "    at moduleResolve (node:internal/modules/esm/resolve:870:10)",
+        "    at moduleResolveWithNodePath (node:internal/modules/esm/resolve:996:14)",
+        "    at defaultResolve (node:internal/modules/esm/resolve:1039:79)",
+        "    at #cachedDefaultResolve (node:internal/modules/esm/loader:718:20)",
+        "    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:735:38)",
+        "    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:764:52)",
+        "    at #resolve (node:internal/modules/esm/loader:700:17)",
+        "    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:620:35)",
+        "    at ModuleJob.syncLink (node:internal/modules/esm/module_job:143:33)"
+    ]
+}`
+        }
+      ]
+    }
+
+    it('should work as expected', () => {
+      const logs = getLogs(testEvent)
+      should(logs).length(1)
+      should(logs[0]).have.property('@timestamp')
+      should(logs[0]).have.property('message', 'Init Error')
+      should(logs[0]).have.property('level', 'ERROR')
+      should(logs[0]).have.property('errorType', 'Error')
+      should(logs[0]).have.property('errorMessage', 'Cannot find module \'/var/settings.js\' imported from /var/task/lib/project/routes/removeProjectFromCollectiveBilling.js')
+      should(logs[0]).have.property('code', 'ERR_MODULE_NOT_FOUND')
+      should(logs[0]).have.property('url', 'file:///var/settings.js')
+      should(logs[0]).have.property('stack')
+      should(logs[0].stack).be.an.Array()
+      should(logs[0].stack.length).equal(11)
+    })
+  })
 })
