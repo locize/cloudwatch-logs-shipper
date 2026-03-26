@@ -14,14 +14,14 @@
     "test": "npm run lint && mocha --colors --reporter spec --recursive test"
   },
   "dependencies": {
-    "@aws-sdk/client-lambda": "3.985.0",
+    "@aws-sdk/client-lambda": "3.1017.0",
     "logzio-nodejs": "2.5.0"
   },
   "devDependencies": {
     "eslint": "9.39.2",
     "eslint-plugin-import": "2.32.0",
     "mocha": "11.7.5",
-    "neostandard": "0.12.2",
+    "neostandard": "0.13.0",
     "should": "13.2.3"
   }
 }

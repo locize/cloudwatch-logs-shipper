@@ -70,8 +70,20 @@
               "Fn::Sub": "${Omit}"
             }
           }
+        }
+      }
+    },
+    "CloudWatchLogsPermission": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "CloudWatchFunction"
         },
-        "Events": {}
+        "Action": "lambda:InvokeFunction",
+        "Principal": "logs.amazonaws.com",
+        "SourceAccount": {
+          "Ref": "AWS::AccountId"
+        }
       }
     }
   },

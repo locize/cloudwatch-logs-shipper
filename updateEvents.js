@@ -25,18 +25,20 @@ exec('aws logs describe-log-groups --region eu-west-1', { env: process.env }, (e
   let appSam = JSON.parse(readFileSync(new URL('./app-sam.json', import.meta.url)))
 
   function finish () {
-    appSam.Resources.CloudWatchFunction.Properties.Events = desiredLogGroupNames.map((name) => ({
-      Type: 'CloudWatchLogs',
-      Properties: {
-        LogGroupName: name,
-        FilterPattern: ''
-      }
-    })).reduce((prev, curr) => {
+    desiredLogGroupNames.forEach((name) => {
       const hasher = createHash('md5')
-      hasher.update(curr.Properties.LogGroupName)
-      prev[hasher.digest('hex')] = curr
-      return prev
-    }, {})
+      hasher.update(name)
+      const key = 'Sub' + hasher.digest('hex')
+      appSam.Resources[key] = {
+        Type: 'AWS::Logs::SubscriptionFilter',
+        DependsOn: 'CloudWatchLogsPermission',
+        Properties: {
+          LogGroupName: name,
+          FilterPattern: '',
+          DestinationArn: { 'Fn::GetAtt': ['CloudWatchFunction', 'Arn'] }
+        }
+      }
+    })
 
     writeFile(join(__dirname, 'app-sam-with-events.json'), JSON.stringify(appSam, null, 2), (err) => {
       if (err) console.error(err)
