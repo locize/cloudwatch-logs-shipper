@@ -294,13 +294,18 @@ describe('getLogs', () => {
           id: '13234567890123456789012345678901234567892342345678902336',
           timestamp: 1484275477128,
           message: 'REPORT RequestId: 971ab2a3-bb53-4bd5-b4eb-d96ba7272fdb\tDuration: 66538.52 ms\tBilled Duration: 66539 ms\tMemory Size: 1408 MB\tMax Memory Used: 408 MB\tInit Duration: 155.60 ms'
+        },
+        {
+          id: '14234567890123456789012345678901234567892342345678902336',
+          timestamp: 1484275477129,
+          message: 'REPORT RequestId: 11c7f3df-c1b5-4507-b3f7-60505f801080\tDuration: 30000.00 ms\tBilled Duration: 30000 ms\tMemory Size: 256 MB\tMax Memory Used: 165 MB\tStatus: timeout'
         }
       ]
     }
 
     it('should work as expected', () => {
       const logs = getLogs(testEvent)
-      should(logs).length(9)
+      should(logs).length(10)
       should(logs[0]).have.property('@timestamp')
       should(logs[0]).have.property('requestId', 'f6a55753-b02b-4b42-bcee-432133f66d26')
       should(logs[0]).have.property('message', 'START RequestId: f6a55753-b02b-4b42-bcee-432133f66d26 Version: blabla')
@@ -354,6 +359,12 @@ describe('getLogs', () => {
       should(logs[8]).have.property('maxMemoryUsed', 408)
       should(logs[8]).have.property('memoryDifference', 1000)
       should(logs[8]).have.property('initDuration', 155.60)
+      should(logs[9]).have.property('requestId', '11c7f3df-c1b5-4507-b3f7-60505f801080')
+      should(logs[9]).have.property('duration', 30000)
+      should(logs[9]).have.property('billedDuration', 30000)
+      should(logs[9]).have.property('memorySize', 256)
+      should(logs[9]).have.property('maxMemoryUsed', 165)
+      should(logs[9]).have.property('status', 'timeout')
     })
   })
 
