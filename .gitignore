@@ -9,3 +9,10 @@ deploy.sh
 app-sam-with-events.json
 customLogHandler.js
 customTemplateExtender.js
+
+# Secrets & credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
