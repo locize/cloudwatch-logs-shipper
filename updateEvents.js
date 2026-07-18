@@ -1,4 +1,5 @@
 import { exec } from 'child_process'
+import { promisify } from 'util'
 import { readFileSync, writeFile, existsSync } from 'fs'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
@@ -51,3 +52,30 @@ exec('aws logs describe-log-groups --region eu-west-1', { env: process.env }, (e
     finish()
   })
 })
+
+// retention drift-catcher — only fills groups with NO retention set (new fns,
+// lazily created Lambda@Edge replica groups); manually chosen values are never touched
+const isDev = (name) => name.indexOf('-dev-') > -1 || name.endsWith('/dev')
+const retentionDaysFor = (name, region) => {
+  if (region !== 'eu-west-1' || name.indexOf('/us-east-1.') > -1) return isDev(name) ? 30 : 365 // edge fn home + replica groups
+  return isDev(name) ? 180 : 731
+}
+
+const execAsync = promisify(exec)
+try {
+  const { stdout: regionsOut } = await execAsync('aws ec2 describe-regions --query "Regions[].RegionName" --output text', { env: process.env })
+  await Promise.all(regionsOut.trim().split(/\s+/).map(async (region) => {
+    try {
+      const { stdout } = await execAsync(`aws logs describe-log-groups --region ${region}`, { env: process.env, maxBuffer: 8 * 1024 * 1024 })
+      for (const lg of JSON.parse(stdout).logGroups.filter((l) => !l.retentionInDays)) {
+        const days = retentionDaysFor(lg.logGroupName, region)
+        await execAsync(`aws logs put-retention-policy --region ${region} --log-group-name "${lg.logGroupName}" --retention-in-days ${days}`, { env: process.env })
+        console.log(`retention: set ${days}d on ${region} ${lg.logGroupName}`)
+      }
+    } catch (e) {
+      console.error(`retention sweep failed for ${region}: ${e.message}`) // never blocks the deploy
+    }
+  }))
+} catch (e) {
+  console.error(`retention sweep skipped: ${e.message}`)
+}
