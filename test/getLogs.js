@@ -1,6 +1,6 @@
 /* eslint-disable @stylistic/no-tabs */
 import should from 'should'
-import getLogs from '../lib/getLogs.js'
+import getLogs, { matchesRule, compileDropRules } from '../lib/getLogs.js'
 
 describe('getLogs', () => {
   const testEvent = {
@@ -602,6 +602,53 @@ describe('getLogs', () => {
       should(logs[0]).have.property('stack')
       should(logs[0].stack).be.an.Array()
       should(logs[0].stack.length).equal(11)
+    })
+  })
+
+  // options.drop: records matching every field of one rule are not shipped
+  describe('with drop rules', () => {
+    const at = '2026-10-31T11:25:37.423Z'
+    const id = '19ab77ce-548f-4e9f-a9e1-c242dfb626e4'
+    const event = (logGroup, errorMessage) => ({
+      logGroup,
+      logStream: 's',
+      logEvents: [
+        { timestamp: 1793445937385, message: `${at}\t${id}\tWARN\t{"message":"Unauthorized: key not valid for this resource"}` },
+        { timestamp: 1793445937423, message: `${at}\t${id}\tERROR\tInvoke Error \t{"errorType":"Error","errorMessage":"${errorMessage}","stack":["Error: ${errorMessage}","    at handler (file:///var/task/lambda.js:1:1)"]}` }
+      ]
+    })
+    const drop = compileDropRules([{ functionName: '/-authorizer$/', level: 'ERROR', message: 'Invoke Error', errorMessage: 'Unauthorized' }])
+
+    it('drops a record matching every field of a rule (string or /regex/)', () => {
+      const logs = getLogs(event('/aws/lambda/my-api-authorizer', 'Unauthorized'), { drop })
+      should(logs).length(1)
+      should(logs[0]).have.property('level', 'WARN')
+    })
+
+    it('keeps records that miss one field, and everything without rules', () => {
+      should(getLogs(event('/aws/lambda/my-api-authorizer', 'Cannot read properties of undefined'), { drop })).length(2)
+      should(getLogs(event('/aws/lambda/my-api', 'Unauthorized'), { drop })).length(2)
+      should(getLogs(event('/aws/lambda/my-api-authorizer', 'Unauthorized'))).length(2)
+    })
+
+    it('matches a missing field only as an empty string, and a regex without keeping state', () => {
+      const [rule] = compileDropRules([{ level: '' }])
+      should(matchesRule({ message: 'x' }, rule)).be.true()
+      should(matchesRule({ message: 'x' }, compileDropRules([{ level: 'ERROR' }])[0])).be.false()
+      const [re] = compileDropRules([{ level: '/^ERROR$/gi' }])
+      should(matchesRule({ level: 'error' }, re)).be.true()
+      should(matchesRule({ level: 'error' }, re)).be.true()
+    })
+
+    it('rejects a config that would drop everything or fail every batch', () => {
+      should(() => compileDropRules({ level: 'ERROR' })).throw(/list/)
+      should(() => compileDropRules([{}])).throw(/non-empty/)
+      should(() => compileDropRules([null])).throw(/non-empty/)
+      should(() => compileDropRules([{ url: '/[/' }])).throw()
+      should(() => compileDropRules([{ url: '/v1/download' }])).throw()
+      should(() => compileDropRules([{ message: '//' }])).throw(/empty pattern/)
+      should(() => compileDropRules([{ field: { a: 1 } }])).throw(/string, number or boolean/)
+      should(matchesRule({ level: 'ERROR' }, [])).be.false()
     })
   })
 })

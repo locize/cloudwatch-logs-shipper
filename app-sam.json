@@ -32,6 +32,11 @@
     "Omit": {
       "Type": "String",
       "Default": ""
+    },
+    "Drop": {
+      "Type": "String",
+      "Default": "",
+      "Description": "JSON list of non-empty rules; a log record matching every field of one rule is not shipped. Values compare as strings; a value starting and ending with '/' is a regex ('/pattern/flags'), keep it anchored and simple. An invalid list drops nothing."
     }
   },
   "Resources": {
@@ -68,6 +73,9 @@
             },
             "OMIT": {
               "Fn::Sub": "${Omit}"
+            },
+            "DROP": {
+              "Fn::Sub": "${Drop}"
             }
           }
         }
