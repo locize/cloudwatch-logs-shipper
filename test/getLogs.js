@@ -1,6 +1,6 @@
 /* eslint-disable @stylistic/no-tabs */
 import should from 'should'
-import getLogs, { matchesRule, compileDropRules } from '../lib/getLogs.js'
+import getLogs, { matchesRule, compileDropRules, REPORT } from '../lib/getLogs.js'
 
 describe('getLogs', () => {
   const testEvent = {
@@ -649,6 +649,34 @@ describe('getLogs', () => {
       should(() => compileDropRules([{ message: '//' }])).throw(/empty pattern/)
       should(() => compileDropRules([{ field: { a: 1 } }])).throw(/string, number or boolean/)
       should(matchesRule({ level: 'ERROR' }, [])).be.false()
+    })
+  })
+  describe('REPORT tag', () => {
+    const event = (logGroup, message) => ({ logGroup, logStream: 's', logEvents: [{ timestamp: 1484275477103, message }] })
+    const line = 'REPORT RequestId: 971ab2a3-bb53-4bd5-b4eb-d96ba7272fdb\tDuration: 66538.52 ms\tBilled Duration: 66539 ms\tMemory Size: 1408 MB\tMax Memory Used: 1402 MB\tInit Duration: 155.60 ms'
+
+    it('tags a real REPORT line, the name from the log group', () => {
+      const [log] = getLogs(event('/aws/lambda/my-function', line))
+      should(log[REPORT]).eql({ functionName: 'my-function', memorySize: 1408, maxMemoryUsed: 1402 })
+      should({ ...log }[REPORT]).be.undefined()
+      should(Object.assign({}, log)[REPORT]).be.undefined()
+    })
+
+    it('reads the raw line, also with spaces and a shortened message', () => {
+      const [log] = getLogs(event('/aws/lambda/my-function', 'REPORT RequestId: a1d3049c-3185-4852-8b45-aec8f2d4107d Duration: 2888.47 ms Billed Duration: 2900 ms Memory Size: 192 MB Max Memory Used: 98 MB Init Duration: 474.27 ms\nXRAY TraceId: 1-5d77b095-7b10875864d08196cbad28d6 SegmentId: 3fd69a1119839b2c Sampled: false'), { reduceReport: true })
+      should(log[REPORT]).eql({ functionName: 'my-function', memorySize: 192, maxMemoryUsed: 98 })
+    })
+
+    it('never tags a JSON line that imitates one', () => {
+      const forged = JSON.stringify({ functionName: 'another-function', memorySize: 128, maxMemoryUsed: 128, memoryDifference: 0, message: 'REPORT RequestId: x\tMemory Size: 128 MB\tMax Memory Used: 128 MB' })
+      const [log] = getLogs(event('/aws/lambda/my-function', forged))
+      should(log.message).startWith('REPORT RequestId: ')
+      should(log[REPORT]).be.undefined()
+    })
+
+    it('never tags a line outside a Lambda log group or a logged REPORT text', () => {
+      should(getLogs(event('my-group', line))[0][REPORT]).be.undefined()
+      should(getLogs(event('/aws/lambda/my-function', `2019-04-05T13:30:48.634Z\t00dc790e-2a09-4d3d-97f9-8d7d81dd231f\tINFO\t${line}`))[0][REPORT]).be.undefined()
     })
   })
 })
