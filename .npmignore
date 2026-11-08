@@ -17,3 +17,4 @@ buildspec.yml
 .eslintignore
 deploy.sh
 .eslint.config.js
+.claude
